@@ -37,4 +37,51 @@ return {
       vim.api.nvim_set_keymap('n', 'zz', '<cmd>ZenMode<CR>', { noremap = true, silent = true })
     end,
   },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    config = function()
+      require('lualine').setup {
+        options = {
+          icons_enabled = true,
+          theme = 'solarized',
+        },
+        sections = {
+          lualine_a = {
+            {
+              'mode',
+            },
+          },
+          lualine_b = {
+            {
+              'filename',
+              path = 4,
+            },
+          },
+          lualine_c = {
+            {
+              'diff',
+            },
+            {
+              'diagnostics',
+            },
+          },
+          -- lualine_x = {
+          -- },
+          -- lualine_y = {
+          -- },
+          lualine_z = {
+            {
+              'datetime',
+              -- options: default, us, uk, iso, or your own format string ("%H:%M", etc..)
+              style = '%H:%M:%S',
+            },
+            {
+              'filesize',
+            },
+          },
+        },
+      }
+    end,
+  },
 }

@@ -34,7 +34,7 @@ return {
     },
     config = function()
       -- toggle zen mode on zz
-      vim.api.nvim_set_keymap('n', 'zz', '<cmd>ZenMode<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('n', '<leader>zz', '<cmd>ZenMode<CR>', { noremap = true, silent = true })
     end,
   },
 
@@ -82,6 +82,19 @@ return {
           },
         },
       }
+    end,
+  },
+
+  -- lazygit
+  {
+    'kdheepak/lazygit.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      vim.keymap.set('n', '<leader>gg', function()
+        vim.cmd 'LazyGit'
+      end, {})
     end,
   },
 }

@@ -567,6 +567,7 @@ require('lazy').setup({
             '--offset-encoding=utf-16',
             '--query-driver=/home/talksik/Qt/6.6.1/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
           },
+          filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'hpp', 'h', 'cc' },
         },
         gopls = {},
         -- pyright = {},
@@ -768,8 +769,8 @@ require('lazy').setup({
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      -- any other, such as 'tokyonight-night', 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+      vim.cmd.colorscheme 'tokyonight-storm'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'

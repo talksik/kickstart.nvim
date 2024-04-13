@@ -565,7 +565,8 @@ require('lazy').setup({
           cmd = {
             '/home/talksik/Qt/Tools/QtCreator/libexec/qtcreator/clang/bin/clangd',
             '--offset-encoding=utf-16',
-            '--query-driver=/home/talksik/Qt/6.6.1/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
+            -- Need below if you want to use an embedded sysroot for library & header files
+            -- '--query-driver=/home/talksik/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
           },
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'hpp', 'h', 'cc' },
         },
@@ -652,6 +653,26 @@ require('lazy').setup({
         -- javascript = { { "prettierd", "prettier" } },
       },
     },
+    config = function()
+      -- https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#command-to-toggle-format-on-save
+      vim.api.nvim_create_user_command('FormatDisable', function(args)
+        if args.bang then
+          -- FormatDisable! will disable formatting just for this buffer
+          vim.b.disable_autoformat = true
+        else
+          vim.g.disable_autoformat = true
+        end
+      end, {
+        desc = 'Disable autoformat-on-save',
+        bang = true,
+      })
+      vim.api.nvim_create_user_command('FormatEnable', function()
+        vim.b.disable_autoformat = false
+        vim.g.disable_autoformat = false
+      end, {
+        desc = 'Re-enable autoformat-on-save',
+      })
+    end,
   },
 
   { -- Autocompletion
@@ -722,6 +743,9 @@ require('lazy').setup({
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
           ['<C-y>'] = cmp.mapping.confirm { select = true },
+          -- accept with enter
+          -- disabled because weird UX in insert mode (next line vs. confirm)
+          -- ['<CR>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -796,7 +820,8 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- NOTE: disabled because conflicts with basic `s` command
+      -- require('mini.surround').setup()
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim

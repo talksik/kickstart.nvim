@@ -159,6 +159,11 @@ vim.opt.scrolloff = 10
 
 vim.opt.wrap = false
 
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.bo.softtabstop = 2
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -512,6 +517,9 @@ require('lazy').setup({
           --  See `:help K` for why this keymap.
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
+          -- run :ClangdSwitchSourceHeader to switch between source/header files 
+          map('<leader>hh', '<cmd>ClangdSwitchSourceHeader<CR>', '[S]witch [H]eader <> Source')
+
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -563,10 +571,10 @@ require('lazy').setup({
         -- },
         clangd = {
           cmd = {
-            '/home/talksik/Qt/Tools/QtCreator/libexec/qtcreator/clang/bin/clangd',
+            '/home/talksik-desktop/Qt/Tools/QtCreator/libexec/qtcreator/clang/bin/clangd',
             '--offset-encoding=utf-16',
             -- Need below if you want to use an embedded sysroot for library & header files
-            -- '--query-driver=/home/talksik/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
+            '--query-driver=/home/talksik-desktop/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
           },
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'hpp', 'h', 'cc' },
         },
@@ -650,7 +658,8 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        javascript = { { "prettierd", "prettier" } },
+        typescript = { { "prettierd", "prettier" } },
       },
     },
     config = function()

@@ -97,17 +97,4 @@ return {
       end, {})
     end,
   },
-
-  -- add in shortcuts for next and previous buffer
-  {
-    'romgrk/barbar.nvim',
-    config = function()
-      vim.keymap.set('n', '<leader>9', function()
-        vim.cmd 'BufferPrevious'
-      end, {})
-      vim.keymap.set('n', '<leader>0', function()
-        vim.cmd 'BufferNext'
-      end, {})
-    end,
-  },
 }

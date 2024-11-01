@@ -296,6 +296,9 @@ require('lazy').setup({
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+    dependencies = {
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+    },
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup()
 
@@ -574,7 +577,7 @@ require('lazy').setup({
             '/home/talksik-desktop/Qt/Tools/QtCreator/libexec/qtcreator/clang/bin/clangd',
             '--offset-encoding=utf-16',
             -- Need below if you want to use an embedded sysroot for library & header files
-            '--query-driver=/home/talksik-desktop/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
+            -- '--query-driver=/home/talksik-desktop/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
           },
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'hpp', 'h', 'cc' },
         },

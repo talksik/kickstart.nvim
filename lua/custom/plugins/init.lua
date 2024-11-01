@@ -98,19 +98,6 @@ return {
     end,
   },
 
-  -- -- add in shortcuts for next and previous buffer
-  -- {
-  --   'romgrk/barbar.nvim',
-  --   config = function()
-  --     vim.keymap.set('n', '<leader>9', function()
-  --       vim.cmd 'BufferPrevious'
-  --     end, {})
-  --     vim.keymap.set('n', '<leader>0', function()
-  --       vim.cmd 'BufferNext'
-  --     end, {})
-  --   end,
-  -- },
-
   {
     "davidmh/mdx.nvim",
     config = true,
@@ -120,8 +107,8 @@ return {
   {
     'akinsho/flutter-tools.nvim',
     requires = {
-        'nvim-lua/plenary.nvim',
-        'stevearc/dressing.nvim', -- optional for vim.ui.select
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim',   -- optional for vim.ui.select
     },
   }
 }

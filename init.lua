@@ -208,10 +208,13 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Disable Copilot by default
+vim.g.copilot_enabled = false
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -477,6 +480,9 @@ require('lazy').setup({
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
+          -- Disable LSP by default
+          -- vim.lsp.stop_client(vim.lsp.get_clients())
+
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
           --
@@ -579,10 +585,10 @@ require('lazy').setup({
         -- },
         clangd = {
           cmd = {
-            '/home/talksik-desktop/Qt/Tools/QtCreator/libexec/qtcreator/clang/bin/clangd',
+            '/Users/talksik/Qt/Qt Creator.app/Contents/Resources/libexec/clang/bin/clangd',
             '--offset-encoding=utf-16',
-            -- Need below if you want to use an embedded sysroot for library & header files
-            -- '--query-driver=/home/talksik-desktop/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
+            --   -- Need below if you want to use an embedded sysroot for library & header files
+            --   -- '--query-driver=/home/talksik-desktop/Qt/6.6.2/Boot2Qt/raspberrypi4-64/toolchain/sysroots/x86_64-pokysdk-linux/usr/bin/aarch64-poky-linux/aarch64-poky-linux-*',
           },
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'hpp', 'h', 'cc' },
         },

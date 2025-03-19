@@ -190,6 +190,12 @@ vim.keymap.set('x', '<leader>p', [["_dP]])
 -- This is going to get me cancelled
 vim.keymap.set('i', '<C-c>', '<Esc>')
 
+vim.api.nvim_create_user_command('StopLSP', function()
+  vim.lsp.stop_client(vim.lsp.get_clients(), true)
+
+  print("Stopped all LSP clients")
+end, {})
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -309,13 +315,13 @@ require('lazy').setup({
       require('which-key').setup()
 
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-      }
+      require('which-key').add({
+        { '<leader>c', group = '[C]ode',      _ = 'which_key_ignore' },
+        { '<leader>d', group = '[D]ocument',  _ = 'which_key_ignore' },
+        { '<leader>r', group = '[R]ename',    _ = 'which_key_ignore' },
+        { '<leader>s', group = '[S]earch',    _ = 'which_key_ignore' },
+        { '<leader>w', group = '[W]orkspace', _ = 'which_key_ignore' },
+      })
     end,
   },
 

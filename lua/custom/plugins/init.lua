@@ -108,7 +108,13 @@ return {
     'akinsho/flutter-tools.nvim',
     requires = {
       'nvim-lua/plenary.nvim',
-      'stevearc/dressing.nvim',   -- optional for vim.ui.select
+      'stevearc/dressing.nvim', -- optional for vim.ui.select
     },
+  },
+  {
+    "danymat/neogen",
+    config = true,
+    -- Uncomment next line if you want to follow only stable versions
+    version = "*"
   }
 }

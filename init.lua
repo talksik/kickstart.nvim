@@ -403,88 +403,109 @@ require('lazy').setup({
         callback = function(event)
           -- Disable LSP by default
           -- vim.lsp.stop_client(vim.lsp.get_clients())
-
-          -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-          -- to define small helper and utility functions so you don't have to repeat yourself.
-          --
-          -- In this case, we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
-
-          -- Go to definition (default <C-]> should also work if 'tagfunc' is set)
-          map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-
-          -- Find references and open in quickfix list
-          map('gr', function()
-            vim.lsp.buf.references()
-            vim.cmd('copen')
-          end, '[G]oto [R]eferences')
-
-          -- Go to implementation
-          map('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-
-          -- Go to type definition
-          map('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-
-          -- Document symbols in quickfix list
-          map('<leader>ds', function()
-            vim.lsp.buf.document_symbol()
-            vim.cmd('copen')
-          end, '[D]ocument [S]ymbols')
-
-          -- Workspace symbols in quickfix list
-          map('<leader>ws', function()
-            vim.lsp.buf.workspace_symbol()
-            vim.cmd('copen')
-          end, '[W]orkspace [S]ymbols')
-
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-          -- Opens a popup that displays documentation about the word under your cursor
-          --  See `:help K` for why this keymap.
-          map('K', vim.lsp.buf.hover, 'Hover Documentation')
-
-          -- run :ClangdSwitchSourceHeader to switch between source/header files
-          map('<leader>hh', '<cmd>ClangdSwitchSourceHeader<CR>', '[S]witch [H]eader <> Source')
-
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          map('<leader>lf', vim.lsp.buf.format, '[L]sp [F]ormat')
-
-          -- Diagnostic keymaps
-          map('<leader>d', vim.diagnostic.open_float, 'Open diagnostics')
-          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-          vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-          vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-          vim.keymap.set('n', '<leader>da', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
-          -- The following two autocommands are used to highlight references of the
-          -- word under your cursor when your cursor rests there for a little while.
-          --    See `:help CursorHold` for information about when this is executed
-          --
-          -- When you move your cursor, the highlights will be cleared (the second autocommand).
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.server_capabilities.documentHighlightProvider then
-            vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.document_highlight,
-            })
+          if client then
+            local filetype = vim.bo[event.buf].filetype
+            -- Check if the attached client supports C++ filetypes
+            local cpp_supported = false
+            for _, ft in ipairs(client.config.filetypes or {}) do
+              if ft == 'cpp' or ft == 'c' or ft == 'objc' or ft == 'objcpp' then
+                cpp_supported = true
+                break
+              end
+            end
 
-            vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-              buffer = event.buf,
-              callback = vim.lsp.buf.clear_references,
-            })
+            -- If the filetype is C++ and the client supports it, we can choose to detach
+            if cpp_supported and (filetype == 'cpp' or filetype == 'h' or filetype == 'c' or filetype == 'objc' or filetype == 'objcpp') then
+              vim.lsp.stop_client(event.data.client_id)
+              print("LSP stopped for " .. filetype .. " file.")
+              return
+            end
+
+            -- NOTE: Remember that Lua is a real programming language, and as such it is possible
+            -- to define small helper and utility functions so you don't have to repeat yourself.
+            --
+            -- In this case, we create a function that lets us more easily define mappings specific
+            -- for LSP related items. It sets the mode, buffer and description for us each time.
+            local map = function(keys, func, desc)
+              vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+            end
+
+            -- Go to definition (default <C-]> should also work if 'tagfunc' is set)
+            map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+
+            -- Find references and open in quickfix list
+            map('gr', function()
+              vim.lsp.buf.references()
+              vim.cmd('copen')
+            end, '[G]oto [R]eferences')
+
+            -- Go to implementation
+            map('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+
+            -- Go to type definition
+            map('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+
+            -- Document symbols in quickfix list
+            map('<leader>ds', function()
+              vim.lsp.buf.document_symbol()
+              vim.cmd('copen')
+            end, '[D]ocument [S]ymbols')
+
+            -- Workspace symbols in quickfix list
+            map('<leader>ws', function()
+              vim.lsp.buf.workspace_symbol()
+              vim.cmd('copen')
+            end, '[W]orkspace [S]ymbols')
+
+            -- Rename the variable under your cursor.
+            --  Most Language Servers support renaming across files, etc.
+            map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+
+            -- Execute a code action, usually your cursor needs to be on top of an error
+            -- or a suggestion from your LSP for this to activate.
+            map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+
+            -- Opens a popup that displays documentation about the word under your cursor
+            --  See `:help K` for why this keymap.
+            map('K', vim.lsp.buf.hover, 'Hover Documentation')
+
+            -- run :ClangdSwitchSourceHeader to switch between source/header files
+            map('<leader>hh', '<cmd>ClangdSwitchSourceHeader<CR>', '[S]witch [H]eader <> Source')
+
+            -- WARN: This is not Goto Definition, this is Goto Declaration.
+            --  For example, in C this would take you to the header.
+            map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+
+            map('<leader>lf', vim.lsp.buf.format, '[L]sp [F]ormat')
+
+            -- Diagnostic keymaps
+            map('<leader>d', vim.diagnostic.open_float, 'Open diagnostics')
+            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
+            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+            vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+            vim.keymap.set('n', '<leader>da', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+            -- The following two autocommands are used to highlight references of the
+            -- word under your cursor when your cursor rests there for a little while.
+            --    See `:help CursorHold` for information about when this is executed
+            --
+            -- When you move your cursor, the highlights will be cleared (the second autocommand).
+            local client = vim.lsp.get_client_by_id(event.data.client_id)
+            if client and client.server_capabilities.documentHighlightProvider then
+              vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+                buffer = event.buf,
+                callback = vim.lsp.buf.document_highlight,
+              })
+
+              vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+                buffer = event.buf,
+                callback = vim.lsp.buf.clear_references,
+              })
+            end
+
           end
+
         end,
       })
 

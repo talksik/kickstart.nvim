@@ -263,7 +263,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -417,6 +417,11 @@ require('lazy').setup({
 
             -- If the filetype is C++ and the client supports it, we can choose to detach
             if cpp_supported and (filetype == 'cpp' or filetype == 'h' or filetype == 'c' or filetype == 'objc' or filetype == 'objcpp') then
+              vim.lsp.stop_client(event.data.client_id)
+              print("LSP stopped for " .. filetype .. " file.")
+              return
+            end
+            if filetype == 'proto' then
               vim.lsp.stop_client(event.data.client_id)
               print("LSP stopped for " .. filetype .. " file.")
               return

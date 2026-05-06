@@ -339,18 +339,26 @@ require('lazy').setup({
 
   -- Fuzzy Finder (files, lsp, etc)
   {
-    "ibhagwan/fzf-lua",
-    -- optional for icon support
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    -- or if using mini.icons/mini.nvim
-    -- dependencies = { "echasnovski/mini.icons" },
-    opts = {},
+    "echasnovski/mini.pick",
     config = function()
-      require('fzf-lua').setup({})
-      vim.keymap.set("n", "<leader>f", "<cmd>FzfLua files<CR>")
-      vim.keymap.set("n", "<leader>g", "<cmd>FzfLua live_grep<CR>")
+      require("mini.pick").setup()
+      vim.keymap.set("n", "<leader>f", "<cmd>Pick files<CR>")
+      vim.keymap.set("n", "<leader>g", "<cmd>Pick grep_live<CR>")
     end,
   },
+  -- {
+  --   "ibhagwan/fzf-lua",
+  --   -- optional for icon support
+  --   dependencies = { "nvim-tree/nvim-web-devicons" },
+  --   -- or if using mini.icons/mini.nvim
+  --   -- dependencies = { "echasnovski/mini.icons" },
+  --   opts = {},
+  --   config = function()
+  --     require('fzf-lua').setup({})
+  --     vim.keymap.set("n", "<leader>f", "<cmd>FzfLua files<CR>")
+  --     vim.keymap.set("n", "<leader>g", "<cmd>FzfLua live_grep<CR>")
+  --   end,
+  -- },
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -668,19 +676,19 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
-    config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-    end,
+    -- config = function(_, opts)
+    --   -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+    --
+    --   ---@diagnostic disable-next-line: missing-fields
+    --   require('nvim-treesitter.configs').setup(opts)
+    --
+    --   -- There are additional nvim-treesitter modules that you can use to interact
+    --   -- with nvim-treesitter. You should go explore a few and see what interests you:
+    --   --
+    --   --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+    --   --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+    --   --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    -- end,
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the

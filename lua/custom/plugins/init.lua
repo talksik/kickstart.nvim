@@ -76,17 +76,4 @@ return {
       end, {})
     end,
   },
-
-  {
-    "davidmh/mdx.nvim",
-    config = true,
-    dependencies = { "nvim-treesitter/nvim-treesitter" }
-  },
-
-  {
-    "danymat/neogen",
-    config = true,
-    -- Uncomment next line if you want to follow only stable versions
-    version = "*"
-  }
 }
